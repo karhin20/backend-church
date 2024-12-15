@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 // Auth routes
-app.post('/api/auth/config', async (req, res) => {
+app.post('https://backend-church.vercel.app/api/auth/config', async (req, res) => {
   try {
     const config = {
       apiKey: process.env.FIREBASE_API_KEY,
