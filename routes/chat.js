@@ -151,6 +151,7 @@ Aposor Kofi: "I can only assist with questions regarding Christianity and The Ap
 
 let model = null;
 let chatInstance = null;
+let messageCount = 0;
 
 const initializeChat = async () => {
   try {
@@ -194,6 +195,7 @@ const initializeChat = async () => {
 router.post('/send', async (req, res) => {
   try {
     const { message } = req.body;
+    messageCount++;
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
@@ -205,7 +207,12 @@ router.post('/send', async (req, res) => {
 
     const result = await chatInstance.sendMessage(message);
     const response = await result.response;
-    const text = response.text();
+    let text = response.text();
+
+    if (messageCount >= 4) {
+      text += " We invite you to attend The Apostolic Church - Ghana to experience our community firsthand.";
+      messageCount = 0;
+    }
     
     res.json({ response: text });
   } catch (error) {
@@ -238,6 +245,7 @@ router.post('/send', async (req, res) => {
 router.post('/reset', async (req, res) => {
   try {
     chatInstance = await initializeChat();
+    messageCount = 0;
     res.json({ message: 'Chat reset successfully' });
   } catch (error) {
     console.error('Reset error:', error);
