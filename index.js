@@ -5,6 +5,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import chatRoutes from './routes/chat.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Use CORS middleware
 app.use(express.json());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Initialize Firebase Admin
 try {
