@@ -210,31 +210,20 @@ router.post('/send', async (req, res) => {
     const response = await result.response;
     let text = response.text();
 
-    if (messageCount >= 3) {
+    // Send invitation after 4 messages
+    if (messageCount === 4) {
       text += " If you are not a member, we invite you to attend The Apostolic Church - Ghana, Nii Boiman Central, Lapaz-Accra to experience our community firsthand.";
-      messageCount = 0;
     }
-    
+
+    // Repeat invitation after 8 messages and reset the count
+    if (messageCount === 8) {
+      text += "If you are not a member, we invite you to attend The Apostolic Church - Ghana, Nii Boiman Central, Lapaz-Accra to experience our community firsthand.";
+      messageCount = 0; // Reset the count after 8 messages
+    }
 
     res.json({ response: text });
   } catch (error) {
-    // If the error is related to the chat instance, try to reinitialize
-    if (error.message.includes('fetch failed') || error.message.includes('Failed to initialize chat')) {
-      try {
-        chatInstance = await initializeChat();
-        const result = await chatInstance.sendMessage(req.body.message);
-        const response = await result.response;
-        const text = response.text();
-        return res.json({ response: text });
-      } catch (retryError) {
-        console.error('Retry error:', retryError);
-        return res.status(500).json({ 
-          error: 'Error processing message after retry',
-          details: retryError.message 
-        });
-      }
-    }
-
+    console.error('Error processing message:', error);
     res.status(500).json({ 
       error: 'Error processing message',
       details: error.message 
