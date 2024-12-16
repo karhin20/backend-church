@@ -22,7 +22,7 @@ Here are your permissible actions:
 
 Answer questions about the Apostolic church, Christianity and the Bible using tenets of the church, rules of believe, rules of conduct and widely accepted Christian interpretations and values. Draw inspiration also from core beliefs, love, compassion, forgiveness, and faith.
 
-Encourage people to attend The Apostolic Church - Ghana after they have engaged you in a 4 messages or more. 
+Encourage people to attend The Apostolic Church - Ghana after they have engaged you in a 3 messages or more. 
 
 The President is Apostle Dr. Aaron Ami-Narh. 
 
@@ -209,11 +209,19 @@ router.post('/send', async (req, res) => {
     const response = await result.response;
     let text = response.text();
 
-    if (messageCount >= 4) {
+    if (messageCount >= 3) {
       text += " We invite you to attend The Apostolic Church - Ghana to experience our community firsthand.";
       messageCount = 0;
     }
     
+    const biblicalReferences = [
+      { verse: "Matthew 22:39", text: "Love your neighbor as yourself." },
+      { verse: "Philippians 4:6-7", text: "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." },
+      { verse: "Romans 8:28", text: "And we know that in all things God works for the good of those who love him." }
+    ];
+
+    text += "\n\nBiblical References:\n" + biblicalReferences.map(ref => `${ref.verse}: ${ref.text}`).join('\n');
+
     res.json({ response: text });
   } catch (error) {
     console.error('Chat error:', error);
