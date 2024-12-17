@@ -196,19 +196,22 @@ const initializeChat = async () => {
 router.post('/send', async (req, res) => {
   try {
     const { message } = req.body;
-    messageCount++;
+
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
     if (!chatInstance) {
+
       chatInstance = await initializeChat();
     }
 
     const result = await chatInstance.sendMessage(message);
     const response = await result.response;
     let text = response.text();
+
+
 
     // Send invitation after 4 messages
     if (messageCount === 4) {
@@ -217,7 +220,7 @@ router.post('/send', async (req, res) => {
 
     // Repeat invitation after 8 messages and reset the count
     if (messageCount === 8) {
-      text += "If you are not a member, we invite you to attend The Apostolic Church - Ghana, Nii Boiman Central, Lapaz-Accra to experience our community firsthand.";
+      text += " If you are not a member, we invite you to attend The Apostolic Church - Ghana, Nii Boiman Central, Lapaz-Accra to experience our community firsthand.";
       messageCount = 0; // Reset the count after 8 messages
     }
 
