@@ -12,7 +12,10 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'https://niiboimancentral.vercel.app',
+  origin: [
+    process.env.FRONTEND_URL || 'https://niiboimancentral.vercel.app',
+    'https://niiboiman.netlify.app'
+  ],
   credentials: true,
 };
 
