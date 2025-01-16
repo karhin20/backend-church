@@ -5,6 +5,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import chatRoutes from './routes/chat.js';
+import bibleApi from './bibleApi.js'; // Import the bible API
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions)); // Use CORS middleware
+app.use(cors(corsOptions)); 
 app.use(express.json());
 
 // Initialize Firebase Admin
@@ -65,6 +66,9 @@ app.get('/test', (req, res) => {
 
 // Chat routes
 app.use('/chat', chatRoutes);
+
+// Use the bible API routes
+app.use('/api', bibleApi);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
